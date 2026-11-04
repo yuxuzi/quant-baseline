@@ -1,0 +1,4 @@
+# Entry point for pytemplate-uv. Component-specific files have names that render empty when the
+# component is not chosen. Templates never declare tasks or migrations.
+_subdirectory: "template"
+--- !include questions.yml

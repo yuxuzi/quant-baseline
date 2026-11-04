@@ -1,0 +1,32 @@
+# Limitations
+
+This template gives you a correct, tested skeleton, not a finished research process. It does
+not handle:
+
+- **Survivorship bias.** Results are only as good as the universe you load. Include delisted
+  assets: when an asset's prices stop, the engine charges `config.DELISTING_RETURN` (default
+  -30%) once. Use the real delisting return when your data has it.
+- **Point-in-time data.** Prices and any fundamentals must be as known at each date, without
+  later revisions.
+- **Corporate actions.** Use prices adjusted for splits and dividends, or adjust them first.
+{%- if 'data-database' in components %}
+- **Your query.** The database loader trusts the query in `config.py` to return one adjusted
+  price per date and asset, as known on that date.
+{%- endif %}
+- **Execution.** Costs are linear in turnover. There is no market impact, borrow cost,
+  short-sale constraint, or capacity limit, and the simulation places no orders.
+- **Exposures.** Beta neutrality uses one factor, the equal-weight market. There are no sector,
+  size, or style neutralisations, and the long-only benchmark is equal-weight, not a
+  cap-weighted index.
+- **Costs in studies.** Quantile spreads are gross and hypothetical. Backtest a signal before
+  drawing conclusions.
+- **Overfitting and multiple testing.** `study` and `backtest` numbers are in-sample; only
+  `walk-forward` reports out-of-sample results. Its grid is small on purpose, but trying many
+  signals or grids still inflates the best result: record every one you try.
+- **Interpretation.** Reports print computed figures only. Write the interpretation yourself,
+  and keep it apart from the figures.
+
+What the tests guard: metric formulas (known answers), no look-ahead in signals, one
+trade-timing convention shared by studies and backtests (`lag` in `config.toml`), missing
+prices (gaps and delistings), drift and the rebalance schedule, cost ordering, and walk-forward choices that never see
+their test windows.
